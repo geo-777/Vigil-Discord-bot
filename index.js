@@ -15,4 +15,8 @@ client.once('ready', () => {
   console.log(`✅ Logged in as ${client.user.tag}!`);
 });
 
+client.on("messageCreate",(msg)=>{
+  console.log(msg.author.username,msg.content);
+});
+
 client.login(process.env.token);
