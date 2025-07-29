@@ -1,22 +1,53 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 
-// Create a new client instance
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds, // Required for basic bot functionality
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMembers
-  ]
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 });
 
-client.once('ready', () => {
-  console.log(`✅ Logged in as ${client.user.tag}!`);
-});
+client.prefix = '?';
+client.prefixCommands = new Collection();
+client.slashCommands = new Collection();
 
-client.on("messageCreate",(msg)=>{
-  console.log(msg.author.username,msg.content);
-});
+// Load prefix commands
+const commandsPath = path.join(__dirname, 'commands');
+const prefixCategories = fs.readdirSync(commandsPath);
 
-client.login(process.env.token);
+for (const category of prefixCategories) {
+  const commandFiles = fs.readdirSync(path.join(commandsPath, category)).filter(file => file.endsWith('.js'));
+  for (const file of commandFiles) {
+    const command = require(`./commands/${category}/${file}`);
+    client.prefixCommands.set(command.name, command);
+  }
+}
+
+// Load slash commands
+const slashPath = path.join(__dirname, 'slashCommands');
+const slashCategories = fs.readdirSync(slashPath);
+
+for (const category of slashCategories) {
+  const commandFiles = fs.readdirSync(path.join(slashPath, category)).filter(file => file.endsWith('.js'));
+  for (const file of commandFiles) {
+    const command = require(`./slashCommands/${category}/${file}`);
+    if ('data' in command && 'execute' in command) {
+      client.slashCommands.set(command.data.name, command);
+    }
+  }
+}
+
+// Load events
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+  const event = require(path.join(eventsPath, file));
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args, client));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args, client));
+  }
+}
+
+client.login(process.env.TOKEN);
