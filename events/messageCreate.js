@@ -4,16 +4,18 @@ module.exports = {
     // Ignore bot messages
     if (message.author.bot) return;
 
-    const prefix = client.prefix;
+    var prefix = client.prefix;
+    var server = message.guildId;
 
+    let prefixData = client.prefixData;
+    if (client.prefixData[server]) {
+      prefix = client.prefixData[server];
+    }
     // ==========  Respond to normal messages (no prefix) ==========
     const content = message.content.toLowerCase();
 
     // Simple text response example
-    if (content === 'hello') {
-      return message.reply('Hello there! 👋');
-    }
-
+  
    
 
     // ==========  Handle prefix-based commands ==========
@@ -29,7 +31,7 @@ module.exports = {
       await command.execute(message, args);
     } catch (err) {
       console.error(err);
-      await message.reply('❌ | An `error` occurred while executing this command.');
+      await message.reply(`${client.ErrorEmoji} | An \`error\` occurred while executing this command.`);
     }
   },
 };
