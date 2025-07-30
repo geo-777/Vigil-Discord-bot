@@ -4,7 +4,7 @@ module.exports = {
   description: 'Sends the bot invite link',
   execute(message, args) {
     const cooldown = 5000; // 5 seconds
-    const remaining = coolDownChecker(message.author.id, "ping", cooldown);
+    const remaining = coolDownChecker(message.author.id, "invite", cooldown);
 
     if (remaining > 0) {
       return message.channel.send(
