@@ -21,7 +21,7 @@ module.exports = {
     // ==========  Handle prefix-based commands ==========
     if (!message.content.startsWith(prefix)) return;
 
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const args = message.content.slice(prefix.length).trim().split(/ +/); //  /+/ means one or more white spaces
     const commandName = args.shift().toLowerCase();
 
     const command = client.prefixCommands.get(commandName);
