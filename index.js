@@ -14,7 +14,9 @@ const client = new Client({
     GatewayIntentBits.GuildPresences,        // Optional: For activity/status-based commands
     GatewayIntentBits.GuildIntegrations,     // Optional: If you integrate with external apps
     GatewayIntentBits.GuildVoiceStates,      // Optional: If you plan voice-related moderation or music
-  ]
+  ] ,
+   partials: [Partials.Message, Partials.Channel]
+
 });
 
 client.prefix = '?';
