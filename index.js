@@ -23,6 +23,8 @@ client.slashCommands = new Collection();
 client.ErrorEmoji="<:error:1400009779182567476>";
 client.TickEmoji="<:tick:1400014597733486673>";
 client.CoolDownEmoji="<:cooldown:1400089192146669634>";
+client.WarnEmoji="<:warn:1400713585310568498>";
+
 console.log("⌚ Loading Prefix Data.");
 const filePath = path.join(__dirname, "data", "customPrefix.json");
 client.prefixData=JSON.parse(fs.readFileSync(filePath))

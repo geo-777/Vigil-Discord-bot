@@ -26,7 +26,6 @@ module.exports = {
                 const filePath = path.join(__dirname, '..', '..', 'data', 'customPrefix.json');
                 
                 
-
                 message.client.prefixData[`${guildId}`]=prefix;
 
                 fs.writeFileSync(filePath,JSON.stringify(message.client.prefixData));
