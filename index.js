@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const fs = require('fs');
 const path = require('path');
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits,Partials } = require('discord.js');
 
 const client = new Client({
   intents: [
@@ -27,10 +27,17 @@ client.TickEmoji="<:tick:1400014597733486673>";
 client.CoolDownEmoji="<:cooldown:1400089192146669634>";
 client.WarnEmoji="<:warn:1400713585310568498>";
 
+
 console.log("⌚ Loading Prefix Data.");
-const filePath = path.join(__dirname, "data", "customPrefix.json");
+var filePath = path.join(__dirname, "data", "customPrefix.json");
 client.prefixData=JSON.parse(fs.readFileSync(filePath))
 console.log(client.prefixData)
+
+//reading snipe
+console.log("⌚ Loading Snipe Data.");
+filePath=path.join(__dirname,"data","snipe.json");
+client.SnipeData = JSON.parse(fs.readFileSync(filePath));
+console.log(client.SnipeData);
 // Load prefix commands
 console.log("⌚ Loading Prefix Commands.");
 const commandsPath = path.join(__dirname, 'commands');
